@@ -16,11 +16,84 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5lN-Qc-0CC">
+                                <rect key="frame" x="20" y="28" width="560" height="552"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JMb-aY-MdQ" userLabel="v1">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="110"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="110" id="TY2-8U-XCa"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OR7-pv-lam" userLabel="v2">
+                                        <rect key="frame" x="0.0" y="110" width="560" height="110"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="110" id="9Zu-Lq-R8Q"/>
+                                            <constraint firstAttribute="height" constant="110" id="xdf-Wi-OJr"/>
+                                        </constraints>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JrI-7A-vYl">
+                                        <rect key="frame" x="0.0" y="220" width="280" height="49"/>
+                                        <color key="backgroundColor" red="0.90588235859999999" green="0.270588249" blue="0.1411764771" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="49" id="fuf-jg-If1"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KGr-sl-Zpg">
+                                        <rect key="frame" x="280" y="220" width="280" height="49"/>
+                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="49" id="0B6-Ja-Ev5"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="49" id="6p8-5g-IyT"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="JMb-aY-MdQ" firstAttribute="leading" secondItem="5lN-Qc-0CC" secondAttribute="leading" id="3of-3G-Yd4"/>
+                                    <constraint firstAttribute="trailing" secondItem="OR7-pv-lam" secondAttribute="trailing" id="Cyv-KG-UnN"/>
+                                    <constraint firstItem="KGr-sl-Zpg" firstAttribute="top" secondItem="OR7-pv-lam" secondAttribute="bottom" id="HE0-oF-fke"/>
+                                    <constraint firstAttribute="trailing" secondItem="KGr-sl-Zpg" secondAttribute="trailing" id="PBQ-QC-kBb"/>
+                                    <constraint firstItem="JMb-aY-MdQ" firstAttribute="top" secondItem="5lN-Qc-0CC" secondAttribute="top" id="PdT-W1-aqM"/>
+                                    <constraint firstItem="JrI-7A-vYl" firstAttribute="top" secondItem="OR7-pv-lam" secondAttribute="bottom" id="Q09-a7-iHw"/>
+                                    <constraint firstItem="OR7-pv-lam" firstAttribute="top" secondItem="JMb-aY-MdQ" secondAttribute="bottom" id="Vaa-4e-bF6"/>
+                                    <constraint firstItem="KGr-sl-Zpg" firstAttribute="leading" secondItem="JrI-7A-vYl" secondAttribute="trailing" id="a03-UY-QdY"/>
+                                    <constraint firstItem="OR7-pv-lam" firstAttribute="leading" secondItem="5lN-Qc-0CC" secondAttribute="leading" id="aPm-HL-1U3"/>
+                                    <constraint firstAttribute="trailing" secondItem="JMb-aY-MdQ" secondAttribute="trailing" id="grp-ek-tNa"/>
+                                    <constraint firstItem="JrI-7A-vYl" firstAttribute="leading" secondItem="5lN-Qc-0CC" secondAttribute="leading" id="uha-Y5-pkD"/>
+                                    <constraint firstItem="KGr-sl-Zpg" firstAttribute="width" secondItem="JrI-7A-vYl" secondAttribute="width" id="zPm-Ix-2Z3"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="5lN-Qc-0CC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="AF9-uO-Orr"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="5lN-Qc-0CC" secondAttribute="bottom" constant="20" id="V0b-L8-mj6"/>
+                            <constraint firstAttribute="trailing" secondItem="5lN-Qc-0CC" secondAttribute="trailing" constant="20" id="cgg-0k-ykn"/>
+                            <constraint firstItem="5lN-Qc-0CC" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="ueP-iI-fwt"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="b1" destination="JrI-7A-vYl" id="KpK-OO-S7u"/>
+                        <outlet property="b2" destination="KGr-sl-Zpg" id="8CF-zU-kRX"/>
+                        <outlet property="v1" destination="JMb-aY-MdQ" id="EEN-yX-qyo"/>
+                        <outlet property="v2" destination="OR7-pv-lam" id="m7a-Hn-4qx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="305" y="389"/>
         </scene>
     </scenes>
 </document>
