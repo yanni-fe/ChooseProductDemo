@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var b1: UIButton!
     @IBOutlet weak var b2: UIButton!
     
-    typealias Product = (period: Int, multi: Int, cate3: Int)
+    typealias Product = (color: String, size: String, package: String)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,12 +26,12 @@ class ViewController: UIViewController {
         b1.setBackgroundImage(createBackgroundImage(UIColor.grayColor(), corners: [], cornerRadius: 0), forState: .Disabled)
         b2.setBackgroundImage(createBackgroundImage(UIColor.grayColor(), corners: [], cornerRadius: 0), forState: .Disabled)
         
-        let a: [Product] = [(7, 1, 100), (7, 2, 200), (30, 1, 300), (30, 3, 200), (30, 2, 100)]
+        let a: [Product] = [("绿色", "S", "套餐1"), ("绿色", "M", "套餐2"), ("红色", "S", "套餐3"), ("红色", "L", "套餐2"), ("红色", "S", "套餐1")]
         products = a.reduce([[String: String]](), combine: { (r, p) in
             var ret = [String: String]()
-            ret["period"] = "\(p.period)"
-            ret["multi"] = "\(p.multi)"
-            ret["cate3"] = "\(p.cate3)"
+            ret["color"] = "\(p.color)"
+            ret["size"] = "\(p.size)"
+            ret["package"] = "\(p.package)"
             return r + [ret]
         })
         setup(products)
@@ -45,7 +45,7 @@ class ViewController: UIViewController {
     var base: [Category: [Element: MyView]] = [:]   // 主结构, 每个element对应一个view
     
     func setup(p: [[Category: Element]]) {
-        let pair = ["period": v1, "multi": v2, "cate3": v3]  // configuration
+        let pair = ["color": v1, "size": v2, "package": v3]  // configuration
         // 得到每个category中包含的element
         p.forEach { product in
             product.forEach { (key, value) in
