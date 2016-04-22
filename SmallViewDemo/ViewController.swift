@@ -13,31 +13,40 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var v1: UIView!
     @IBOutlet weak var v2: UIView!
+    @IBOutlet weak var v3: UIView!
     
     @IBOutlet weak var b1: UIButton!
     @IBOutlet weak var b2: UIButton!
     
-    typealias Product = (period: Int, multi: Int)
+    typealias Product = (period: Int, multi: Int, cate3: Int)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let a: [Product] = [(7, 1), (7, 2), (30, 1), (30, 3)]
+        b1.setBackgroundImage(createBackgroundImage(UIColor.grayColor(), corners: [], cornerRadius: 0), forState: .Disabled)
+        b2.setBackgroundImage(createBackgroundImage(UIColor.grayColor(), corners: [], cornerRadius: 0), forState: .Disabled)
+        
+        let a: [Product] = [(7, 1, 100), (7, 2, 200), (30, 1, 300), (30, 3, 200), (30, 2, 100)]
         products = a.reduce([[String: String]](), combine: { (r, p) in
             var ret = [String: String]()
             ret["period"] = "\(p.period)"
             ret["multi"] = "\(p.multi)"
+            ret["cate3"] = "\(p.cate3)"
             return r + [ret]
         })
-        createView(products)
+        setup(products)
     }
-    var products = [[String: String]]()     // [[category: element]]
-    var categories = [String: [String]]() // 每个category包含的选项 [category: [element]]
-    var selected = [String: String]()  // [category: element]
-    var base: [String: [String: MyView]] = [:]
     
-    func createView(p: [[String: String]]) {
-        let pair = ["period": v1, "multi": v2]
+    typealias Element = String
+    typealias Category = String
+    var products = [[Category: Element]]()          // [[category: element]]
+    var categories = [Category: [Element]]()        // 每个category包含的选项 [category: [element]]
+    var selected = [Category: Element]()            // [category: element]
+    var base: [Category: [Element: MyView]] = [:]   // 主结构, 每个element对应一个view
+    
+    func setup(p: [[Category: Element]]) {
+        let pair = ["period": v1, "multi": v2, "cate3": v3]  // configuration
+        // 得到每个category中包含的element
         p.forEach { product in
             product.forEach { (key, value) in
                 categories[key] = categories[key].flatMap { $0.contains(value) ? $0 : $0 + [value] } ?? [value]
@@ -52,7 +61,7 @@ class ViewController: UIViewController {
             view.centerXAnchor.constraintLessThanOrEqualToAnchor(containerView.centerXAnchor).active = true
             view.centerYAnchor.constraintLessThanOrEqualToAnchor(containerView.centerYAnchor).active = true
             var views = [UIView]()
-            elements.sort { _, _ in true/* TODO: */ }.forEach { element in
+            elements.sort { _, _ in true/* TODO: custom sort */ }.forEach { element in
                 let v = createElementView(category, element: element)
                 views.append(v)
                 view.addSubview(v)
@@ -64,34 +73,7 @@ class ViewController: UIViewController {
             }
             layout(views)
         }
-    }
-    
-    private func createElementView(category: String, element: String) -> MyView {
-        let view = MyView()
-        view.addTarget(self, action: #selector(onTap(_:)), forControlEvents: .TouchUpInside)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.category = category
-        view.element = element
-        view.setTitle(element, forState: .Normal)
-        view.setBackgroundImage(createBackgroundImage(UIColor.greenColor(), corners: [], cornerRadius: 0), forState: .Normal)
-        view.setBackgroundImage(createBackgroundImage(UIColor.redColor(), corners: [], cornerRadius: 0), forState: .Selected)
-        view.setBackgroundImage(createBackgroundImage(UIColor.grayColor(), corners: [], cornerRadius: 0), forState: .Disabled)
-        return view
-    }
-
-    private func layout(views: [UIView]) {
-        guard views.count > 0 else { return }
-        var pre = views[0]
-        NSLayoutConstraint.fromVisualFormat("V:|-0-[pre(44)]-0-|", views: ["pre": pre]).forEach { $0.active = true }
-        NSLayoutConstraint.fromVisualFormat("H:|-0-[pre(60)]", views: ["pre": pre]).forEach { $0.active = true }
-        for i in 1..<views.count {
-            let v = views[i]
-            v.heightAnchor.constraintEqualToAnchor(pre.heightAnchor, multiplier: 1).active = true
-            v.centerYAnchor.constraintEqualToAnchor(pre.centerYAnchor).active = true
-            NSLayoutConstraint.fromVisualFormat("H:[pre]-12-[v(60)]", views: ["pre": pre, "v": v]).forEach { $0.active = true }
-            pre = v
-        }
-        NSLayoutConstraint.fromVisualFormat("H:[pre]-0-|", views: ["pre": pre]).forEach { $0.active = true }
+        selectedChanged()
     }
     
     @objc private func onTap(sender: MyView) {
@@ -99,7 +81,6 @@ class ViewController: UIViewController {
         let element = sender.element
         if let ele = selected[category] {
             if ele == element {
-                selected[category] = nil
                 selected.removeValueForKey(category)
             } else {
                 base[category]?[element]?.selected = true
@@ -136,7 +117,52 @@ class ViewController: UIViewController {
             }
         }
         // 2. 底部button状态
+        if selected.count == categories.count {
+            b1.enabled = true
+            b2.enabled = true
+            // 3. 如果可以购买, 过滤出可用products
+            let selectedProducts = products.filter { p -> Bool in
+                for (category, element) in selected {
+                    if p[category] != element {
+                        return false
+                    }
+                }
+                return true
+            }
+            print(selectedProducts)
+        } else {
+            b1.enabled = false
+            b2.enabled = false
+        }
         
+    }
+    
+    private func createElementView(category: Category, element: Element) -> MyView {
+        let view = MyView()
+        view.addTarget(self, action: #selector(onTap(_:)), forControlEvents: .TouchUpInside)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.category = category
+        view.element = element
+        view.setTitle(element, forState: .Normal)
+        view.setBackgroundImage(createBackgroundImage(UIColor.greenColor(), corners: [], cornerRadius: 0), forState: .Normal)
+        view.setBackgroundImage(createBackgroundImage(UIColor.redColor(), corners: [], cornerRadius: 0), forState: .Selected)
+        view.setBackgroundImage(createBackgroundImage(UIColor.grayColor(), corners: [], cornerRadius: 0), forState: .Disabled)
+        return view
+    }
+    
+    private func layout(views: [UIView]) {
+        guard views.count > 0 else { return }
+        var pre = views[0]
+        NSLayoutConstraint.fromVisualFormat("V:|-0-[pre(44)]-0-|", views: ["pre": pre]).forEach { $0.active = true }
+        NSLayoutConstraint.fromVisualFormat("H:|-0-[pre(60)]", views: ["pre": pre]).forEach { $0.active = true }
+        for i in 1..<views.count {
+            let v = views[i]
+            v.heightAnchor.constraintEqualToAnchor(pre.heightAnchor, multiplier: 1).active = true
+            v.centerYAnchor.constraintEqualToAnchor(pre.centerYAnchor).active = true
+            NSLayoutConstraint.fromVisualFormat("H:[pre]-12-[v(60)]", views: ["pre": pre, "v": v]).forEach { $0.active = true }
+            pre = v
+        }
+        NSLayoutConstraint.fromVisualFormat("H:[pre]-0-|", views: ["pre": pre]).forEach { $0.active = true }
     }
 }
 extension NSLayoutConstraint {
